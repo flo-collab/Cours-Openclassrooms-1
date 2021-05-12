@@ -83,6 +83,11 @@ class Zone:
             return 0
         return sum([inhabitant.income for inhabitant in self.inhabitants]) / self.population
 
+    def average_age(self):
+        if not self.inhabitants:
+            return 0
+        return sum([inhabitant.age for inhabitant in self.inhabitants]) / self.population
+
     def contains(self, position):
         return position.longitude >= min(self.corner1.longitude, self.corner2.longitude) and \
             position.longitude < max(self.corner1.longitude, self.corner2.longitude) and \
@@ -129,16 +134,6 @@ class Zone:
 
 # ---------------
 
-
-class BaseGraph:
-
-    def __init__(self):
-        self.title = "Yort graph title"
-        self.x_label = "X-axis label"
-        self.y_label = "X-axis label"
-        self.show_grid = True
-
-
 class BaseGraph:
 
     def __init__(self):
@@ -176,6 +171,20 @@ class AgreeablenessGraph(BaseGraph):
 
 
 class IncomebyageGraph(BaseGraph):
+
+    def __init__(self):
+        super().__init__()
+        self.title = "Richness by average age"
+        self.x_label = "Average Age"
+        self.y_label = "Average Income"
+
+    def xy_values(self, zones):
+        x_values = [zone.average_age() for zone in zones]
+        y_values = [zone.average_income() for zone in zones]
+        return x_values, y_values
+
+
+class RichnesspopdensityGraph(BaseGraph):
     def __init__(self):
         super().__init__()
         self.title = "Rich live in the countryside"
@@ -199,14 +208,20 @@ def main():
         zone = Zone.find_zone_that_contains(position)
         zone.add_inhabitant(agent)
     # on écrit ici ce que l'on veux executer en plus
-        print(zone.average_income())
 
     # Initialisation du graphique
     agreeableness_graph = AgreeablenessGraph()
-
     # Affichage du graphique.
     # On passe en paramètre la liste de nos zones pour y avoir accès à l'intérieur de notre classe AgreeablenessGraph.
     agreeableness_graph.show(zone.ZONES)
+
+    richness_popdensity_graph = RichnesspopdensityGraph()
+    richness_popdensity_graph.show(zone.ZONES)
+
+    income_by_age_graph = IncomebyageGraph()
+    income_by_age_graph.show(zone.ZONES)
+
+
 
 
 main()

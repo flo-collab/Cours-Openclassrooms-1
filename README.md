@@ -7,3 +7,5 @@ Nous simulons ici un monde virtuel peuplé de 100 000 personnes. Nous cherchons 
 - à partir de quel âge les personnes gagnent plus d'argent que la moyenne.
 
 Lorsqe le programme se lance, une première fenêtre affiche un graphique concernant la densité de population puis une seconde concernant le revenu.
+
+Ajout d'un graph richesse par raport à la densité de population
